@@ -26,7 +26,8 @@ shinyUI(fluidPage(
       h3("Howto"),
       p("Please select a date for starting your investment period. Also select
         and investment interval. We will purchase 100 units of currency every
-        interval from the start date till the current data."),
+        interval from the start date till the current data. Press the submit
+        button after your selections."),
       dateInput("date",
                 "Starting Date", 
                 value = "1980-01-01", 

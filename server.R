@@ -7,18 +7,24 @@
 
 library(shiny)
 library(lubridate)
+library(RCurl)
 
 shinyServer(function(input, output) {
 
   data <- NULL;
-  unit <- 100
+  unit <- 100;
+  Sys.setlocale(category = "LC_ALL", locale = "en_US.UTF-8");
   
   loadCSV <- function() {
     if (!is.null(data)) return (data)
     
-    data <- read.csv("data//bse30.csv", as.is=TRUE)
-    data$Date <- as.Date(strptime(data$Date, "%d-%B-%Y"))
-    data
+    #message("loading data")
+    #url <- getURL("https://raw.githubusercontent.com/autodidact/DataProductShiny/master/data/bse30.csv",encoding="UTF-8")
+    ldata <- read.csv("data/bse30date.csv")
+                
+    ldata$Date <- as.Date(ldata$Date)
+    data <<- ldata
+    return (data)
   }
   
   calculateDates <- function(start, end, interval) {   
@@ -39,7 +45,10 @@ shinyServer(function(input, output) {
     
     interval <- input$interval
     start <- input$date
+    
     end <- tail(data$Date, n=1)
+    print(str(data))
+    print(end)
     
     dates <- calculateDates(start, end, interval)
     total <- length(dates)
